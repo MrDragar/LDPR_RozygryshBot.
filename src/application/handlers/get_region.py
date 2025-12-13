@@ -39,14 +39,6 @@ async def retry_region_callback(query: types.CallbackQuery, state: FSMContext):
 async def region_by_button(query: types.CallbackQuery,
                            callback_data: RegionCallback, state: FSMContext,
                            user_service: IUserService):
-    if await user_service.is_user_exists(query.from_user.id):
-        address = await user_service.get_region_address(
-            await user_service.get_user_region(query.from_user.id))
-        logging.debug(f"User {query.from_user.id} already exists")
-        return await query.reply(f"Вы уже успешно зарегистрировались\n\n"
-                                 f"{address}\n"
-                                 f"По указанному адресу вы сможете забрать свой подарок, а также получить полезную информацию."
-                                 )
     await query.message.edit_reply_markup(reply_markup=None)
     region = callback_data.region
     logger.debug(f'Выбранный регион: {region}')

@@ -17,21 +17,12 @@ logger = logging.getLogger(__name__)
 @start_command_router.message(filters.CommandStart())
 async def start(message: types.Message, user_service: IUserService, state: FSMContext):
     if await user_service.is_user_exists(message.from_user.id):
-        address = await user_service.get_region_address(await user_service.get_user_region(message.from_user.id))
         logging.debug(f"User {message.from_user.id} already exists")
-        return await message.reply(f"Вы уже успешно зарегистрировались\n"
-                                   f"{address}\n\n"
-                                   f"По указанному адресу вы сможете забрать свой подарок, а также получить полезную информацию."
-       )
+        return await message.reply(f"Вы уже зарегистрировались. Ваш номер: {message.from_user.id}")
 
     logging.debug(f"User {message.from_user.id} Start conversation")
     await message.reply(
-        "Здравствуйте! ЛДПР дарит вашему ребёнку новогоднее чудо! \n\n"
-        "Чтобы мы могли передать подарок, пожалуйста, укажите Ваши имя и номер "
-        "телефона для связи. Так мы сможем делиться с Вами полезными и тёплыми "
-        "материалами для всей семьи: открытки к праздникам, раскраски с "
-        "весёлыми персонажами, журналы полезных привычек и многое другое. "
-        "Это и не только станет приятным дополнением к нашему общению!"
+        "Приветствие (текст в разработке)."
     )
 
     await message.reply("Для начала дайте согласие на обработку персональных данных", reply_markup=get_personal_data_keyboard())

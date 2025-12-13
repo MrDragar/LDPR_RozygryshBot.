@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 @router.message(RegistrationStates.email)
 async def get_email(message: types.Message, state: FSMContext, user_service: IUserService):
     email = message.text
+    if not email:
+        return
     logger.debug(f"Got email {email}")
     try:
         email = await user_service.validate_email(email)

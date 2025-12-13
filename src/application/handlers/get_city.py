@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 async def get_city(message: types.Message, state: FSMContext,
                    user_service: IUserService):
     city = message.text
+    if not city:
+        return
     logger.debug(f"Got city {city}")
     if not city or len(city) < 2:
         return await message.reply(
@@ -25,6 +27,10 @@ async def get_city(message: types.Message, state: FSMContext,
     email = data['email']
     region = data['region']
     gender = data['gender']
+
+    if await user_service.is_user_exists(message.from_user.id):
+        return await message.reply(f"Вы уже зарегистрировались. Ваш номер: {message.from_user.id}")
+
     user = await user_service.create_user(
         message.from_user.id, message.from_user.username,
         fio, phone, region, email, gender, city

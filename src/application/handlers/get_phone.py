@@ -14,6 +14,8 @@ logger = logging.getLogger(__name__)
 @router.message(RegistrationStates.phone)
 async def get_phone_number(message: types.Message, state: FSMContext, user_service: IUserService):
     phone = message.text
+    if not phone:
+        return
     logger.debug(f"Got phone number {phone}")
     try:
         phone = await user_service.validate_phone(phone)

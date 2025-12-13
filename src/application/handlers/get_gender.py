@@ -15,6 +15,8 @@ logger = logging.getLogger(__name__)
 @router.message(RegistrationStates.gender)
 async def get_gender(message: types.Message, state: FSMContext, user_service: IUserService):
     gender = message.text
+    if not gender:
+        return
     logger.debug(f"Got gender {gender}")
     if gender.strip().lower() not in ["мужской", "женский"]:
         await message.reply("Выберите пол", reply_markup=get_gender_keyboard())
