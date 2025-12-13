@@ -3,7 +3,7 @@ import re
 
 from src.domain.entities.user import User
 from src.domain.exceptions import UserNotFoundError, PhoneBadFormatError, \
-    PhoneAlreadyExistsError, PhoneBadCountryError, EmailAlreadyExistsError, EmailMadFormatError
+    PhoneAlreadyExistsError, PhoneBadCountryError, EmailAlreadyExistsError, EmailBadFormatError
 from src.domain.interfaces import IUnitOfWork, IUserRepository, \
     IStringSorterRepository
 from src.services.interfaces import IUserService
@@ -25,10 +25,10 @@ class UserService(IUserService):
 
     async def create_user(
             self, user_id: int, username: str | None,
-            fio: str, phone_number: str, region: str
+            fio: str, phone_number: str, region: str, email: str
     ) -> User:
         user = User(
-            id=user_id, username=username, phone_number=phone_number, fio=fio, region=region
+            id=user_id, username=username, phone_number=phone_number, fio=fio, region=region, email=email
         )
         async with self.__uow.atomic():
             await self.__user_repo.create_user(user)
@@ -77,7 +77,7 @@ class UserService(IUserService):
     async def validate_email(self, email: str) -> str:
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(pattern, email.strip()):
-            raise EmailMadFormatError()
+            raise EmailBadFormatError()
 
         async with self.__uow.atomic():
             is_existing = await self.__user_repo.is_email_existing(email)

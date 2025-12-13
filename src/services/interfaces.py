@@ -7,7 +7,7 @@ class IUserService(ABC):
     @abstractmethod
     async def create_user(
             self, user_id: int, username: str | None,
-            fio: str, phone_number: str, region: str
+            fio: str, phone_number: str, region: str, email: str
     ) -> User:
         ...
 
@@ -17,6 +17,10 @@ class IUserService(ABC):
 
     @abstractmethod
     async def validate_phone(self, phone_number: str) -> str:
+        ...
+
+    @abstractmethod
+    async def validate_email(self, email: str) -> str:
         ...
     
     @abstractmethod

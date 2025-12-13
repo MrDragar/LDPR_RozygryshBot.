@@ -55,8 +55,9 @@ async def region_by_button(query: types.CallbackQuery,
     data = await state.get_data()
     fio = data['fio']
     phone = data['phone']
+    email = data['email']
     await user_service.create_user(query.from_user.id, query.from_user.username,
-                                   fio, phone, region)
+                                   fio, phone, region, email)
     await state.clear()
     await query.message.reply(
         f"Поздравляем, вы успешно зарегистрированы.\n"

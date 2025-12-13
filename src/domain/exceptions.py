@@ -14,8 +14,9 @@ class PhoneBadCountryError(Exception):
     ...
 
 
-class EmailMadFormatError(Exception):
+class EmailBadFormatError(Exception):
     ...
+
 
 class EmailAlreadyExistsError(Exception):
     ...
