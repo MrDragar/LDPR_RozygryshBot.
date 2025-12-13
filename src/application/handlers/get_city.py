@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 @router.message(RegistrationStates.city)
 async def get_city(message: types.Message, state: FSMContext,
-                   user_service: IUserService):
+                   user_service: IUserService, log_chat: str):
     city = message.text
     if not city:
         return
@@ -44,3 +44,15 @@ async def get_city(message: types.Message, state: FSMContext,
         f"Ваш уникальный номер - Б{user.id}. Дата финала - 10.01.2026",
         parse_mode="HTML"
     )
+    await message.bot.send_message(chat_id=log_chat, text=f"""
+Новый пользователь {'@' + user.username if '<нет username>' else user.id} зарегистрировался.
+ФИО: {user.surname} {user.name} {user.patronymic}
+Пол: {user.gender}
+Дата рождения: {user.birth_date.strftime('%d.%m.%Y')}
+Почта: {user.email}
+Номер телефона: {user.phone_number}
+Регион: {user.region}
+Город: {user.city}
+
+Номер участника: Б{user.id}
+""")

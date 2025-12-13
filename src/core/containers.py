@@ -5,6 +5,7 @@ from src.infrastructure.interfaces import IDatabase
 from src.infrastructure.repositories import UserRepository, LevenshteinRepository, FuzzywuzzyRepository
 from src.services import UserService
 from src.services.interfaces import IUserService
+from src.core import config
 
 
 class Container(DeclarativeContainer):
@@ -23,3 +24,4 @@ class Container(DeclarativeContainer):
     user_service: providers.Factory[IUserService] = providers.Factory(
         UserService, user_repo=user_repository, uow=uow, string_sorter_repo=string_sorter
     )
+    log_chat: providers.Object[str] = providers.Object(config.log_chat)
