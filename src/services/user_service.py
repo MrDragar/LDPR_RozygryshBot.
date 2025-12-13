@@ -1,5 +1,5 @@
-import logging
 import re
+from datetime import date
 
 from src.domain.entities.user import User
 from src.domain.exceptions import UserNotFoundError, PhoneBadFormatError, \
@@ -25,11 +25,15 @@ class UserService(IUserService):
 
     async def create_user(
             self, user_id: int, username: str | None,
-            fio: str, phone_number: str, region: str, email: str,
+            surname: str, name: str, patronymic: str | None, birth_date: date,
+            phone_number: str, region: str, email: str,
             gender: str, city: str
     ) -> User:
         user = User(
-            id=user_id, username=username, phone_number=phone_number, fio=fio, region=region, email=email, gender=gender, city=city
+            id=user_id, username=username, phone_number=phone_number,
+            surname=surname, name=name, patronymic=patronymic,
+            birth_date=birth_date,region=region, email=email,
+            gender=gender, city=city
         )
         async with self.__uow.atomic():
             await self.__user_repo.create_user(user)

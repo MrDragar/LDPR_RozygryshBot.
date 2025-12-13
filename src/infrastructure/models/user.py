@@ -1,3 +1,6 @@
+from datetime import date
+
+from sqlalchemy import Date
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.domain.entities.user import User
@@ -9,7 +12,10 @@ class UserORM(Base):
 
     id: Mapped[int] = mapped_column("id", primary_key=True)
     username: Mapped[str] = mapped_column("username", nullable=True)
-    fio: Mapped[str] = mapped_column("fio", nullable=False)
+    surname: Mapped[str] = mapped_column("surname", nullable=False)
+    name: Mapped[str] = mapped_column("name", nullable=False)
+    patronymic: Mapped[str] = mapped_column("patronymic", nullable=True)
+    birth_date: Mapped[date] = mapped_column("birth_date", Date, nullable=False)
     phone_number: Mapped[str] = mapped_column("phone_number", nullable=False, unique=True)
     region: Mapped[str] = mapped_column("region", nullable=False)
     email: Mapped[str] = mapped_column("email", nullable=False)
@@ -20,7 +26,10 @@ class UserORM(Base):
         return User(
             id=self.id,
             username=self.username,
-            fio=self.fio,
+            surname=self.surname,
+            name=self.name,
+            patronymic=self.patronymic,
+            birth_date=self.birth_date,
             phone_number=self.phone_number,
             region=self.region,
             email=self.email,
@@ -33,7 +42,10 @@ class UserORM(Base):
         return cls(
             id=user.id,
             username=user.username,
-            fio=user.fio,
+            surname=user.surname,
+            name=user.name,
+            patronymic=user.patronymic,
+            birth_date=user.birth_date,
             phone_number=user.phone_number,
             region=user.region,
             email=user.email,

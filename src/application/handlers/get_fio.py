@@ -9,12 +9,48 @@ router = Router(name=__name__)
 logger = logging.getLogger(__name__)
 
 
-@router.message(RegistrationStates.fio)
-async def get_fio(message: types.Message, state: FSMContext):
-    fio = message.text
-    if not fio:
+@router.message(RegistrationStates.surname)
+async def get_surname(message: types.Message, state: FSMContext):
+    if not message.text:
         return
-    logger.debug(f"Got fio {fio}")
-    await state.update_data(fio=fio)
-    await state.set_state(RegistrationStates.phone)
-    await message.reply("Введите ваш номер телефона")
+    surname = message.text.strip()
+    if not surname:
+        await message.reply("Пожалуйста, введите фамилию")
+        return
+
+    logger.debug(f"Got surname: {surname}")
+    await state.update_data(surname=surname)
+    await state.set_state(RegistrationStates.name)
+    await message.reply("Отлично! Теперь введите ваше имя")
+
+
+@router.message(RegistrationStates.name)
+async def get_name(message: types.Message, state: FSMContext):
+    if not message.text:
+        return
+    name = message.text.strip()
+    if not name:
+        await message.reply("Пожалуйста, введите имя")
+        return
+
+    logger.debug(f"Got name: {name}")
+    await state.update_data(name=name)
+    await state.set_state(RegistrationStates.patronymic)
+    await message.reply(
+        "Введите ваше отчество (если нет отчества, отправьте прочерк '-' или слово 'нет')")
+
+
+@router.message(RegistrationStates.patronymic)
+async def get_patronymic(message: types.Message, state: FSMContext):
+    if not message.text:
+        return
+    patronymic = message.text.strip()
+
+    if patronymic.lower() in ['-', 'нет', 'нету', 'отсутствует', '']:
+        patronymic = None
+
+    logger.debug(f"Got patronymic: {patronymic}")
+    await state.update_data(patronymic=patronymic)
+    await state.set_state(RegistrationStates.birth_date)
+    await message.reply(
+        "Введите вашу дату рождения в формате ДД.ММ.ГГГГ\n(например, 15.05.1990)")

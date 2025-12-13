@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import date
 
 from src.domain.entities.user import User
 
@@ -7,7 +8,8 @@ class IUserService(ABC):
     @abstractmethod
     async def create_user(
             self, user_id: int, username: str | None,
-            fio: str, phone_number: str, region: str, email: str,
+            surname: str, name: str, patronymic: str | None, birth_date: date,
+            phone_number: str, region: str, email: str,
             gender: str, city: str
     ) -> User:
         ...

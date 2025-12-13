@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 
 @router.callback_query(F.data == "pd_agree")
 async def pd_agree(query: types.CallbackQuery, state: FSMContext):
-    await query.message.reply("Введите ваше ФИО")
-    await state.set_state(RegistrationStates.fio)
+    await query.message.reply("Введите вашу фамилию")
+    await state.set_state(RegistrationStates.surname)
 
 
 @router.callback_query(F.data == "pd_disagree")
