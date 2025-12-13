@@ -12,6 +12,7 @@ class UserORM(Base):
     fio: Mapped[str] = mapped_column("fio", nullable=False)
     phone_number: Mapped[str] = mapped_column("phone_number", nullable=False, unique=True)
     region: Mapped[str] = mapped_column("region", nullable=False)
+    email: Mapped[str] = mapped_column("email", nullable=False)
 
     async def to_domain(self) -> User:
         return User(
@@ -19,7 +20,8 @@ class UserORM(Base):
             username=self.username,
             fio=self.fio,
             phone_number=self.phone_number,
-            region=self.region
+            region=self.region,
+            email=self.email
         )
 
     @classmethod
@@ -29,5 +31,6 @@ class UserORM(Base):
             username=user.username,
             fio=user.fio,
             phone_number=user.phone_number,
-            region=user.region
+            region=user.region,
+            email=user.email
         )

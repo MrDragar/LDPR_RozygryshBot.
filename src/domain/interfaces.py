@@ -22,6 +22,10 @@ class IUserRepository(ABC):
     @abstractmethod
     async def is_phone_number_existing(self, phone_number: str) -> bool:
         ...
+    
+    @abstractmethod
+    async def is_email_existing(self, email: str) -> bool:
+        ...
 
 
 class IStringSorterRepository(ABC):

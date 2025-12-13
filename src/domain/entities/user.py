@@ -8,3 +8,4 @@ class User:
     fio: str
     phone_number: str
     region: str
+    email: str

@@ -1,8 +1,9 @@
 import logging
+import re
 
 from src.domain.entities.user import User
 from src.domain.exceptions import UserNotFoundError, PhoneBadFormatError, \
-    PhoneAlreadyExistsError, PhoneBadCountryError
+    PhoneAlreadyExistsError, PhoneBadCountryError, EmailAlreadyExistsError, EmailMadFormatError
 from src.domain.interfaces import IUnitOfWork, IUserRepository, \
     IStringSorterRepository
 from src.services.interfaces import IUserService
@@ -72,6 +73,17 @@ class UserService(IUserService):
             if is_existing:
                 raise PhoneAlreadyExistsError
         return phone_number
+
+    async def validate_email(self, email: str) -> str:
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(pattern, email.strip()):
+            raise EmailMadFormatError()
+
+        async with self.__uow.atomic():
+            is_existing = await self.__user_repo.is_email_existing(email)
+            if is_existing:
+                raise EmailAlreadyExistsError
+        return email.strip()
 
     async def get_similar_regions(self, region: str) -> list[str]:
         sorted_regions = await self.__string_sorter_repo.sort_by_similarity(region, list(self.__region_addresses.keys()))
