@@ -50,23 +50,6 @@ async def region_by_button(query: types.CallbackQuery,
     await query.message.edit_reply_markup(reply_markup=None)
     region = callback_data.region
     logger.debug(f'Выбранный регион: {region}')
-    address = await user_service.get_region_address(region)
-
-    data = await state.get_data()
-    fio = data['fio']
-    phone = data['phone']
-    email = data['email']
-    await user_service.create_user(query.from_user.id, query.from_user.username,
-                                   fio, phone, region, email)
-    await state.clear()
-    await query.message.reply(
-        f"Поздравляем, вы успешно зарегистрированы.\n"
-        f"{address}\n\n"
-        f"По указанному адресу вы сможете забрать свой подарок, а также получить полезную информацию.",
-        parse_mode="HTML"
-    )
-    await query.message.answer(
-        """Пока вы ждёте, предлагаем провести время с пользой — на нашем <a href='https://t.me'>сайте</a> 
-вы найдёте развивающие материалы для детей, доступные для мгновенного скачивания.""",
-        parse_mode="HTML"
-    )
+    await state.update_data(region=region)
+    await query.message.reply("Укажите ваш город или населённый пункт")
+    await state.set_state(RegistrationStates.city)

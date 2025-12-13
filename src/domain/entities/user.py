@@ -9,3 +9,5 @@ class User:
     phone_number: str
     region: str
     email: str
+    gender: str
+    city: str

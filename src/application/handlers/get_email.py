@@ -3,6 +3,7 @@ import logging
 from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 
+from src.application.keyboards.gender_keyboard import get_gender_keyboard
 from src.application.states import RegistrationStates
 from src.domain import exceptions
 from src.services.interfaces import IUserService
@@ -25,5 +26,5 @@ async def get_email(message: types.Message, state: FSMContext, user_service: IUs
         logger.debug(f"Ошибка {e}")
         return message.reply("Произошла неизвестная ошибка")
     await state.update_data(email=email)
-    await message.reply("Укажите регион вашего проживания")
-    await state.set_state(RegistrationStates.region_by_text)
+    await message.reply("Укажите ваш пол", reply_markup=get_gender_keyboard())
+    await state.set_state(RegistrationStates.gender)

@@ -25,10 +25,11 @@ class UserService(IUserService):
 
     async def create_user(
             self, user_id: int, username: str | None,
-            fio: str, phone_number: str, region: str, email: str
+            fio: str, phone_number: str, region: str, email: str,
+            gender: str, city: str
     ) -> User:
         user = User(
-            id=user_id, username=username, phone_number=phone_number, fio=fio, region=region, email=email
+            id=user_id, username=username, phone_number=phone_number, fio=fio, region=region, email=email, gender=gender, city=city
         )
         async with self.__uow.atomic():
             await self.__user_repo.create_user(user)
