@@ -46,7 +46,7 @@ async def get_city(message: types.Message, state: FSMContext,
     )
     await message.answer_sticker(types.FSInputFile('docs/sokol_ldpr.webp'))
     await message.bot.send_message(chat_id=log_chat, text=f"""
-Новый пользователь {'@' + user.username if '<нет username>' else user.id} зарегистрировался.
+Новый пользователь {'@' + user.username if user.username else '<нет username>'} зарегистрировался.
 ФИО: {user.surname} {user.name} {user.patronymic}
 Пол: {user.gender}
 Дата рождения: {user.birth_date.strftime('%d.%m.%Y')}

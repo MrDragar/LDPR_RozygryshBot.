@@ -11,6 +11,7 @@ services:
       - .env
     environment:
       API_TOKEN: ${API_TOKEN}
+      LOG_CHAT: ${LOG_CHAT}
       LOG_LEVEL: ${LOG_LEVEL}
       LOG_FILE: ${LOG_FILE}
       LOG_FORMAT: ${LOG_FORMAT}
