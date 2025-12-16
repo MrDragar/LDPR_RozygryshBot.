@@ -44,7 +44,7 @@ async def get_city(message: types.Message, state: FSMContext,
         f"Ваш уникальный номер - Б{user.id}. Дата финала - 10.01.2026",
         parse_mode="HTML"
     )
-    await message.answer_sticker(types.FSInputFile('docs/sokol_ldpr.webp'))
+    await message.answer_sticker(types.FSInputFile('docs/sokol_like.webp'))
     await message.bot.send_message(chat_id=log_chat, text=f"""
 Новый пользователь {'@' + user.username if user.username else '<нет username>'} зарегистрировался.
 ФИО: {user.surname} {user.name} {user.patronymic}
