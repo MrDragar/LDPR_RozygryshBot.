@@ -20,6 +20,7 @@ async def get_gender(message: types.Message, state: FSMContext, user_service: IU
     logger.debug(f"Got gender {gender}")
     if gender.strip().lower() not in ["мужской", "женский"]:
         await message.reply("Выберите пол", reply_markup=get_gender_keyboard())
+        return
     await state.update_data(gender=gender)
     await message.reply("Укажите регион вашего проживания", reply_markup=ReplyKeyboardRemove())
     await state.set_state(RegistrationStates.region_by_text)
