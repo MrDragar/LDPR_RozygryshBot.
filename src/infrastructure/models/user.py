@@ -1,6 +1,6 @@
-from datetime import date
+from datetime import date, datetime, UTC
 
-from sqlalchemy import Date
+from sqlalchemy import Date, DateTime, func, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.domain.entities.user import User
@@ -21,6 +21,12 @@ class UserORM(Base):
     email: Mapped[str] = mapped_column("email", nullable=False)
     gender: Mapped[str] = mapped_column("gender", nullable=False)
     city: Mapped[str] = mapped_column("city", nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        "created_at",
+        DateTime,
+        nullable=False,
+        default=lambda: datetime.now(UTC)
+    )
 
     async def to_domain(self) -> User:
         return User(
