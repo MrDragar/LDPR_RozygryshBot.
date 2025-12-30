@@ -49,3 +49,28 @@ class UserRepository(IUserRepository):
         user_orm = await session.scalar(stmt)
         logger.debug(user_orm)
         return user_orm is not None
+
+    async def get_users(
+            self,
+            skip: int = 0,
+            limit: int = 100,
+            **filters
+    ) -> list[User]:
+        logger.debug(
+            f"Getting users with filters={filters}, skip={skip}, limit={limit}")
+        session = self.__uow.get_session()
+        stmt = select(UserORM)
+
+        for field, value in filters.items():
+            if hasattr(UserORM, field):
+                stmt = stmt.where(getattr(UserORM, field) == value)
+
+        stmt = stmt.offset(skip).limit(limit)
+        result = await session.execute(stmt)
+        user_orms = result.scalars().all()
+
+        users = []
+        for user_orm in user_orms:
+            users.append(await user_orm.to_domain())
+        logger.debug(f"Found {len(users)} users")
+        return users

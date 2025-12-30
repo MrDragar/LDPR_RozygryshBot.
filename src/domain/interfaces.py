@@ -27,6 +27,15 @@ class IUserRepository(ABC):
     async def is_email_existing(self, email: str) -> bool:
         ...
 
+    @abstractmethod
+    async def get_users(
+        self, 
+        skip: int = 0, 
+        limit: int = 100,
+        **filters
+    ) -> list[User]:
+        ...
+
 
 class IStringSorterRepository(ABC):
     @abstractmethod

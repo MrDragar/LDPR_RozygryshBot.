@@ -37,3 +37,7 @@ class IUserService(ABC):
     @abstractmethod
     async def get_user_region(self, user_id: int) -> str:
         ...
+
+    @abstractmethod
+    async def get_all_users(self) -> list[User]:
+        ...

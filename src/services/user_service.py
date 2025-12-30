@@ -98,3 +98,7 @@ class UserService(IUserService):
         if region not in self.__region_addresses:
             raise Exception("Not found a region")
         return self.__region_addresses.get(region)
+
+    async def get_all_users(self) -> list[User]:
+        async with self.__uow.atomic():
+            return await self.__user_repo.get_users()
