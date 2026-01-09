@@ -25,3 +25,4 @@ class Container(DeclarativeContainer):
         UserService, user_repo=user_repository, uow=uow, string_sorter_repo=string_sorter
     )
     log_chat: providers.Object[str] = providers.Object(config.log_chat)
+    admin_ids: providers.Object[list[int]] = providers.Object(config.admin_ids)

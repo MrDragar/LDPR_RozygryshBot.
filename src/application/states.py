@@ -14,3 +14,7 @@ class RegistrationStates(StatesGroup):
     region_by_button = State()
     city = State()
 
+
+class PostsStates(StatesGroup):
+    get_message = State()
+    confirm = State()
