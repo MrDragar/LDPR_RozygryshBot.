@@ -1,5 +1,5 @@
-from dataclasses import dataclass
-from datetime import date
+from dataclasses import dataclass, field
+from datetime import date, datetime
 
 
 @dataclass
@@ -15,3 +15,4 @@ class User:
     email: str
     gender: str
     city: str
+    created_at: datetime = field(default_factory=lambda: datetime.now())

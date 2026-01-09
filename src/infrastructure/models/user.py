@@ -40,7 +40,8 @@ class UserORM(Base):
             region=self.region,
             email=self.email,
             gender=self.gender,
-            city=self.city
+            city=self.city,
+            created_at=self.created_at
         )
 
     @classmethod
@@ -56,5 +57,6 @@ class UserORM(Base):
             region=user.region,
             email=user.email,
             gender=user.gender,
-            city=user.city
+            city=user.city,
+            created_at=user.created_at
         )
