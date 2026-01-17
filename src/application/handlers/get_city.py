@@ -32,7 +32,7 @@ async def get_city(message: types.Message, state: FSMContext,
     gender = data['gender']
 
     if await user_service.is_user_exists(message.from_user.id):
-        return await message.reply(f"Вы уже зарегистрировались. Ваш номер: {message.from_user.id}")
+        return await message.reply(f"Вы уже зарегистрировались.")
 
     user = await user_service.create_user(
         message.from_user.id, message.from_user.username,
@@ -40,8 +40,7 @@ async def get_city(message: types.Message, state: FSMContext,
     )
     await state.clear()
     await message.reply(
-        f"Поздравляем, вы успешно зарегистрированы.\n"
-        f"Ваш уникальный номер - Б{user.id}. Дата финала - 10.01.2026",
+        f"Поздравляем, вы успешно зарегистрированы.\n",
         parse_mode="HTML"
     )
     await message.answer_sticker(types.FSInputFile('docs/sokol_like.webp'))

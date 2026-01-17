@@ -22,16 +22,14 @@ async def start(message: types.Message, user_service: IUserService,
     if await user_service.is_user_exists(message.from_user.id):
         logging.debug(f"User {message.from_user.id} already exists")
         return await message.reply(
-            f"Вы уже зарегистрировались. Ваш номер: {message.from_user.id}")
+            "Здравствуйте. Я, соколёнок Русик, интернет-помощник ЛДПР. Добро пожаловать в ЛДПР!"
+        )
 
     logging.debug(f"User {message.from_user.id} Start conversation")
 
     await message.answer_sticker(types.FSInputFile('docs/sokol_stay.webp'))
     await message.reply(
-        "Здравствуйте. Я, соколёнок Русик, интернет-помощник ЛДПР. "
-        "Вы регистрируетесь в Новогоднем розыгрыше партии. "
-        "Чтобы получить подарок, дайте согласие на обработку персональных "
-        "данных и ответьте на несколько простых вопросов. Желаю удачи!"
+        "Здравствуйте. Я, соколёнок Русик, интернет-помощник ЛДПР. Добро пожаловать в ЛДПР!"
     )
 
     await message.reply(
