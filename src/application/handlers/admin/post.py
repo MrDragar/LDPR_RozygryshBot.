@@ -49,33 +49,36 @@ async def confirm_post_handler(
     bad_id = []
     count = 0
     for user in users:
-        await asyncio.sleep(0.5)
+        # await asyncio.sleep(0.5)
+        logger.info(f"Checking {user.id}")
         try:
             sent_message = await message.bot.copy_message(user.id, message.chat.id, message_id, disable_notification=True)
-            await message.bot.delete_message(user.id, sent_message.message_id)
+            await sent_message.bot.delete_message(user.id, sent_message.message_id)
             good_id.append(user.id)
             success_count += 1
         except Exception as e:
             logger.debug(e)
             bad_id.append(user.id)
         count += 1
-        if count % 1000 == 0:
-            results = {
-                "total_users": len(users),
-                "success_count": success_count,
-                "failed_count": len(users) - success_count,
-                "successful_ids": good_id,
-                "failed_users": bad_id,
-                "timestamp": datetime.now().isoformat()
-            }
-
-            results_json = json.dumps(results, ensure_ascii=False, indent=2)
-            json_file = types.BufferedInputFile(
-                results_json.encode('utf-8'),
-                filename=f"mailing_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-            )
-            await message.answer_document(json_file,
-                                          caption="Промежуточные результаты рассылки")
+        if count % 100 == 0:
+            await message.answer(f"Обработано {count}")
+        # if count % 1000 == 0:
+        #     results = {
+        #         "total_users": len(users),
+        #         "success_count": success_count,
+        #         "failed_count": len(users) - success_count,
+        #         "successful_ids": good_id,
+        #         "failed_users": bad_id,
+        #         "timestamp": datetime.now().isoformat()
+        #     }
+        #
+        #     results_json = json.dumps(results, ensure_ascii=False, indent=2)
+        #     json_file = types.BufferedInputFile(
+        #         results_json.encode('utf-8'),
+        #         filename=f"mailing_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        #     )
+        #     await message.answer_document(json_file,
+        #                                   caption="Промежуточные результаты рассылки")
 
     await message.answer(f"Рассылка завершена. Отправлено "
                          f"успешно {success_count} сообщений из "
