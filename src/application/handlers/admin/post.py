@@ -1,3 +1,5 @@
+import asyncio
+import json
 import logging
 from datetime import timedelta, timezone, datetime
 
@@ -52,15 +54,37 @@ async def confirm_post_handler(
     users = filtered_users
     await message.answer(f"Начинаю рассылку на {len(users)} пользователей", reply_markup=ReplyKeyboardRemove())
     success_count = 0
+    good_id = []
+    bad_id = []
     for user in users:
+        await asyncio.sleep(0.5)
         try:
-            await message.bot.copy_message(user.id, message.chat.id, message_id)
+            sent_message = await message.bot.copy_message(user.id, message.chat.id, message_id, disable_notification=True)
+            await message.bot.delete_message(user.id, sent_message.message_id)
+            good_id.append(user.id)
             success_count += 1
         except Exception as e:
             logger.debug(e)
+            bad_id.append(user.id)
     await message.answer(f"Рассылка завершена. Отправлено "
                          f"успешно {success_count} сообщений из "
                          f"{len(users)}")
+
+    results = {
+        "total_users": len(users),
+        "success_count": success_count,
+        "failed_count": len(users) - success_count,
+        "successful_ids": good_id,
+        "failed_users": bad_id,
+        "timestamp": datetime.now().isoformat()
+    }
+
+    results_json = json.dumps(results, ensure_ascii=False, indent=2)
+    json_file = types.BufferedInputFile(
+        results_json.encode('utf-8'),
+        filename=f"mailing_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    )
+    await message.answer_document(json_file, caption="📋 Результаты рассылки")
 
 
 @router.message(PostsStates.confirm)
