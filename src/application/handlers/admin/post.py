@@ -43,15 +43,6 @@ async def confirm_post_handler(
     users = await user_service.get_all_users()
     message_id = (await state.get_data())['message_id']
     await state.clear()
-    msk_timezone = timezone(timedelta(hours=3))
-    cutoff_date_msk = datetime(2026, 1, 9, 0, 0, 0, tzinfo=msk_timezone)
-    cutoff_date_utc = cutoff_date_msk.astimezone(timezone.utc)
-    cutoff_date_utc_naive = cutoff_date_utc.replace(tzinfo=None)
-    filtered_users = []
-    for user in users:
-        if user.created_at <= cutoff_date_utc_naive:
-            filtered_users.append(user)
-    users = filtered_users
     await message.answer(f"Начинаю рассылку на {len(users)} пользователей", reply_markup=ReplyKeyboardRemove())
     success_count = 0
     good_id = []
