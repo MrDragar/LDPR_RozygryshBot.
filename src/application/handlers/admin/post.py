@@ -47,6 +47,7 @@ async def confirm_post_handler(
     success_count = 0
     good_id = []
     bad_id = []
+    count = 0
     for user in users:
         await asyncio.sleep(0.5)
         try:
@@ -57,6 +58,25 @@ async def confirm_post_handler(
         except Exception as e:
             logger.debug(e)
             bad_id.append(user.id)
+        count += 1
+        if count % 1000 == 0:
+            results = {
+                "total_users": len(users),
+                "success_count": success_count,
+                "failed_count": len(users) - success_count,
+                "successful_ids": good_id,
+                "failed_users": bad_id,
+                "timestamp": datetime.now().isoformat()
+            }
+
+            results_json = json.dumps(results, ensure_ascii=False, indent=2)
+            json_file = types.BufferedInputFile(
+                results_json.encode('utf-8'),
+                filename=f"mailing_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            )
+            await message.answer_document(json_file,
+                                          caption="Промежуточные результаты рассылки")
+
     await message.answer(f"Рассылка завершена. Отправлено "
                          f"успешно {success_count} сообщений из "
                          f"{len(users)}")
