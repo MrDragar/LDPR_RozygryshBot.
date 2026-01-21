@@ -65,7 +65,7 @@ class UserRepository(IUserRepository):
             if hasattr(UserORM, field):
                 stmt = stmt.where(getattr(UserORM, field) == value)
 
-        stmt = stmt.offset(skip).limit(limit)
+        stmt = stmt.offset(skip)
         result = await session.execute(stmt)
         user_orms = result.scalars().all()
 
