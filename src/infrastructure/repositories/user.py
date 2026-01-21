@@ -33,7 +33,7 @@ class UserRepository(IUserRepository):
         if user_orm is None:
             logger.debug(f"Not found user with id={user_id}")
             raise exceptions.UserNotFoundError()
-        logger.debug(f"Found user {user_orm.to_domain()}")
+        logger.debug(f"Found user {await user_orm.to_domain()}")
         return await user_orm.to_domain()
 
     async def is_phone_number_existing(self, phone_number: str) -> bool:
