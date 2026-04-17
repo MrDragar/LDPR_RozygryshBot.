@@ -11,6 +11,7 @@ services:
       - .env
     environment:
       API_TOKEN: ${API_TOKEN}
+      PROXY: ${PROXY}
       ADMIN_IDS: ${ADMIN_IDS}
       LOG_CHAT: ${LOG_CHAT}
       LOG_LEVEL: ${LOG_LEVEL}
