@@ -54,8 +54,7 @@ async def confirm_post_handler(
             continue
         logger.info(f"Checking {user.id}")
         try:
-            sent_message = await message.bot.copy_message(user.id, message.chat.id, message_id, disable_notification=True)
-            await sent_message.bot.delete_message(user.id, sent_message.message_id)
+            sent_message = await message.bot.copy_message(user.id, message.chat.id, message_id)
             good_id.append(user.id)
             success_count += 1
         except Exception as e:
@@ -89,7 +88,7 @@ async def confirm_post_handler(
     results = {
         "total_users": len(users),
         "success_count": success_count,
-        "failed_count": len(users) - success_count,
+        "failed_count": len(bad_id),
         "successful_ids": good_id,
         "failed_users": bad_id,
         "timestamp": datetime.now().isoformat()
