@@ -50,6 +50,8 @@ async def confirm_post_handler(
     count = 0
     for user in users:
         # await asyncio.sleep(0.5)
+        if user.region not in ["Тамбовская область", 'Рязанская область', 'Владимирская область']:
+            continue
         logger.info(f"Checking {user.id}")
         try:
             sent_message = await message.bot.copy_message(user.id, message.chat.id, message_id, disable_notification=True)
