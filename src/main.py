@@ -19,7 +19,7 @@ async def main():
     )
     bot = Bot(
         token=config.API_TOKEN,
-        session=AiohttpSession(proxies=config.proxy)
+        session=AiohttpSession(proxy=config.proxy)
     )
     container = Container()
     logging.debug(f"{vars(container)}, {container.user_service}")
